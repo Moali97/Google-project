@@ -1,8 +1,43 @@
+from src.video_playlist import Playlist
+from src.video import Video
+
+import random
+import enum
+
+
+
 """A video player class."""
 
 from .video_library import VideoLibrary
 #python -m pytest test/part1_test.py
 
+class video_state(enum.Enum):
+    Playing = 1
+    Pause = 2
+    Stop = 3
+    Continue = 4
+
+class video_under_process:
+    def __init__(self):
+        self.video = None
+        self.status = video_state.Stop
+
+    def set_video(self, video, state):
+        self.video = video
+        self.set_status(state)
+
+    def set_status(self, state):
+        self.status = state
+
+        if self.status == video_state.Playing:
+            print("Playing video: " + self.video._title)
+        elif self.status == video_state.Pause:
+            print("Pausing video: " + self.video._title)
+        elif self.status == video_state.Stop:
+            print("Stopping video: " + self.video._title)
+            self.video = None
+        elif self.status == video_state.Continue:
+            print("Continuing video: " + self.video._title)
 
 class VideoPlayer:
     """A class used to represent a Video Player."""
@@ -44,6 +79,19 @@ class VideoPlayer:
         Args:
             video_id: The video_id to be played.
         """
+        video = self._video_library.get_video(video_id)
+        if video != None:
+
+            if (video.flagged == None):
+                if self.video_under_process.status != video_state.Stop:  # for avoiding the first time error print message from stop_video
+                    self.stop_video()  # stopping the current video if playing
+
+                self.video_under_process.set_video(video, video_state.Playing)
+            else:
+                print("Cannot play video: Video is currently flagged (reason: " + video.flagged + ")")
+
+        else:
+            print("Cannot play video: Video does not exist")
 
 #        print("play_video needs implementation")
 

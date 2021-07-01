@@ -16,6 +16,7 @@ class VideoPlayer:
 
     def show_all_videos(self):
         """Returns all videos."""
+
         all_videos = self._video_library.get_all_videos()
         unsorted_vids = []
         sorted_vids = []
@@ -35,9 +36,7 @@ class VideoPlayer:
         for videos in sorted_vids:
             print(videos)
 
-
-
-#print("show_all_videos needs implementation")
+    #print("show_all_videos needs implementation")
 
     def play_video(self, video_id, current_video=None):
         """Plays the respective video.
@@ -45,27 +44,20 @@ class VideoPlayer:
         Args:
             video_id: The video_id to be played.
         """
-        video = self._video_library.get_videos(video_id)
-        if video == None:
-            error = "Cannot stop video: No video is currently playing"
-            print(error)
-        elif current_video == None:
-            current_video = video
-            current_video.status = "playing"
-            playing = "playing video: " + str(video.title)
-            print(playing)
+
+        video = self._video_library.get_video(video_id)
+        if video != None:
+
+            if (video.flagged == None):
+                if self.video_under_process.status != video_state.Stop:  # for avoiding the first time error print message from stop_video
+                    self.stop_video()  # stopping the current video if playing
+
+            self.video_under_process.set_video(video, video_state.Playing)
+            else:
+                print("Cannot play video: Video is currently flagged (reason: " + video.flagged + ")")
+
         else:
-            if current_video != None:
-                stopping = "stopping video: " + str
-                (current_video.title)
-                current_video.status = "stopping"
-                print(stopping)
-            current_video = video
-            current_video.status = "playing"
-            playing = "playing video: " + str(video.title)
-            print(playing)
-
-
+            print("Cannot play video: Video does not exist")
 
 
 #        print("play_video needs implementation")

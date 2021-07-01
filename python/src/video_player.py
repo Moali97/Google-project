@@ -45,21 +45,6 @@ class VideoPlayer:
             video_id: The video_id to be played.
         """
 
-        video = self._video_library.get_video(video_id)
-        if video != None:
-
-            if (video.flagged == None):
-                if self.video_under_process.status != video_state.Stop:  # for avoiding the first time error print message from stop_video
-                    self.stop_video()  # stopping the current video if playing
-
-            self.video_under_process.set_video(video, video_state.Playing)
-            else:
-                print("Cannot play video: Video is currently flagged (reason: " + video.flagged + ")")
-
-        else:
-            print("Cannot play video: Video does not exist")
-
-
 #        print("play_video needs implementation")
 
     def stop_video(self):

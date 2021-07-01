@@ -1,6 +1,7 @@
 """A video player class."""
 
 from .video_library import VideoLibrary
+#python -m pytest test/part1_test.py
 
 
 class VideoPlayer:
@@ -15,16 +16,59 @@ class VideoPlayer:
 
     def show_all_videos(self):
         """Returns all videos."""
+        all_videos = self._video_library.get_all_videos()
+        unsorted_vids = []
+        sorted_vids = []
 
-        print("show_all_videos needs implementation")
+        print("Here's a list of all available videos:")
 
-    def play_video(self, video_id):
+        for vid in all_videos:
+            tags = "["
+
+            for tag in vid.tags:
+                tags += tag + " "
+
+            tags = tags.strip()
+            tags += "]"
+            unsorted_vids += [f"{vid.title} ({vid.video_id}) {tags}"]
+        sorted_vids = sorted(unsorted_vids)
+        for videos in sorted_vids:
+            print(videos)
+
+
+
+#print("show_all_videos needs implementation")
+
+    def play_video(self, video_id, current_video=None):
         """Plays the respective video.
 
         Args:
             video_id: The video_id to be played.
         """
-        print("play_video needs implementation")
+        video = self._video_library.get_videos(video_id)
+        if video == None:
+            error = "Cannot stop video: No video is currently playing"
+            print(error)
+        elif current_video == None:
+            current_video = video
+            current_video.status = "playing"
+            playing = "playing video: " + str(video.title)
+            print(playing)
+        else:
+            if current_video != None:
+                stopping = "stopping video: " + str
+                (current_video.title)
+                current_video.status = "stopping"
+                print(stopping)
+            current_video = video
+            current_video.status = "playing"
+            playing = "playing video: " + str(video.title)
+            print(playing)
+
+
+
+
+#        print("play_video needs implementation")
 
     def stop_video(self):
         """Stops the current video."""
